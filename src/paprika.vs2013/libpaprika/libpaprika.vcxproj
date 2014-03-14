@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A5B5E122-664B-41D0-AB9A-8729FCEF21A5}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>libpaprika</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;LIBPAPRIKA_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.;..\lib\windows_vc11\boost\include;..\lib\windows_vc11\osl\include;..\lib\windows_vc11\openexr\include;..\lib\windows_vc11\openimageio\include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBPAPRIKA_EXPORTS;_CRT_SECURE_NO_WARNINGS;OSL_STATIC_LIBRARY;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.;..\lib\win64_vc12\boost\include;..\lib\win64_vc12\osl\include;..\lib\win64_vc12\openexr\include;..\lib\win64_vc12\openimageio\include;..\lib\embree-bin-2.2_win\include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\lib\win64_vc12\zlib\lib;..\lib\win64_vc12\png\lib;..\lib\win64_vc12\jpeg\lib;..\lib\win64_vc12\tiff\lib;..\lib\win64_vc12\boost\lib;..\lib\win64_vc12\openexr\lib;..\lib\win64_vc12\openimageio\lib;..\lib\embree-bin-2.2_win\lib\x64;..\lib\win64_vc12\llvm\lib;..\lib\win64_vc12\osl\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libz_st_d.lib;libpng_d.lib;libjpeg_d.lib;libtiff.lib;Half_d.lib;Iex_d.lib;IexMath_d.lib;IlmImf_d.lib;IlmThread_d.lib;Imath_d.lib;OpenImageIO_d.lib;LLVMAnalysis.lib;LLVMArchive.lib;LLVMAsmParser.lib;LLVMAsmPrinter.lib;LLVMBitReader.lib;LLVMBitWriter.lib;LLVMCodeGen.lib;LLVMCore.lib;LLVMDebugInfo.lib;LLVMExecutionEngine.lib;LLVMInstCombine.lib;LLVMInstrumentation.lib;LLVMInterpreter.lib;LLVMJIT.lib;LLVMLinker.lib;LLVMMC.lib;LLVMMCDisassembler.lib;LLVMMCJIT.lib;LLVMMCParser.lib;LLVMObject.lib;LLVMRuntimeDyld.lib;LLVMScalarOpts.lib;LLVMSelectionDAG.lib;LLVMSupport.lib;LLVMTableGen.lib;LLVMTarget.lib;LLVMTransformUtils.lib;LLVMVectorize.lib;LLVMX86AsmParser.lib;LLVMX86AsmPrinter.lib;LLVMX86CodeGen.lib;LLVMX86Desc.lib;LLVMX86Disassembler.lib;LLVMX86Info.lib;LLVMX86Utils.lib;LLVMipa.lib;LLVMipo.lib;oslcomp_d.lib;oslexec_d.lib;oslquery_d.lib;embree.lib;libboost_wave-vc110-mt-sgd-1_53.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;LIBPAPRIKA_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.;..\lib\windows_vc11\boost\include;..\lib\windows_vc11\osl\include;..\lib\windows_vc11\openexr\include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBPAPRIKA_EXPORTS;_CRT_SECURE_NO_WARNINGS;OSL_STATIC_LIBRARY;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\..;..\..\..\external\win64_vc12\boost\include;..\..\..\external\win64_vc12\osl\include;..\..\..\external\win64_vc12\openexr\include;..\..\..\external\win64_vc12\openimageio\include;..\..\..\external\embree-bin-2.2_win\include;..\..\generators\lua-5.1.5\src</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>..\..\..\external\win64_vc12\zlib\lib;..\..\..\external\win64_vc12\png\lib;..\..\..\external\win64_vc12\jpeg\lib;..\..\..\external\win64_vc12\tiff\lib;..\..\..\external\win64_vc12\boost\lib;..\..\..\external\win64_vc12\openexr\lib;..\..\..\external\win64_vc12\openimageio\lib;..\..\..\external\embree-bin-2.2_win\lib\x64;..\..\..\external\win64_vc12\llvm\lib;..\..\..\external\win64_vc12\osl\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libz_st.lib;libpng.lib;libjpeg.lib;libtiff.lib;Half.lib;Iex-2_1.lib;IexMath-2_1.lib;IlmImf-2_1.lib;IlmThread-2_1.lib;Imath-2_1.lib;OpenImageIO.lib;LLVMAnalysis.lib;LLVMArchive.lib;LLVMAsmParser.lib;LLVMAsmPrinter.lib;LLVMBitReader.lib;LLVMBitWriter.lib;LLVMCodeGen.lib;LLVMCore.lib;LLVMDebugInfo.lib;LLVMExecutionEngine.lib;LLVMInstCombine.lib;LLVMInstrumentation.lib;LLVMInterpreter.lib;LLVMJIT.lib;LLVMLinker.lib;LLVMMC.lib;LLVMMCDisassembler.lib;LLVMMCJIT.lib;LLVMMCParser.lib;LLVMObject.lib;LLVMRuntimeDyld.lib;LLVMScalarOpts.lib;LLVMSelectionDAG.lib;LLVMSupport.lib;LLVMTableGen.lib;LLVMTarget.lib;LLVMTransformUtils.lib;LLVMVectorize.lib;LLVMX86AsmParser.lib;LLVMX86AsmPrinter.lib;LLVMX86CodeGen.lib;LLVMX86Desc.lib;LLVMX86Disassembler.lib;LLVMX86Info.lib;LLVMX86Utils.lib;LLVMipa.lib;LLVMipo.lib;oslcomp.lib;oslexec.lib;oslquery.lib;embree.lib;libboost_wave-vc120-mt-s-1_55.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\api\paprikaapi.hpp" />
+    <ClInclude Include="..\..\cameras\perspectivecamera.hpp" />
+    <ClInclude Include="..\..\core\camera.hpp" />
+    <ClInclude Include="..\..\core\debug.hpp" />
+    <ClInclude Include="..\..\core\generator.hpp" />
+    <ClInclude Include="..\..\core\geometry.hpp" />
+    <ClInclude Include="..\..\core\mc.hpp" />
+    <ClInclude Include="..\..\core\parametermap.hpp" />
+    <ClInclude Include="..\..\core\paramitem.hpp" />
+    <ClInclude Include="..\..\core\paramtype.hpp" />
+    <ClInclude Include="..\..\core\primitive.hpp" />
+    <ClInclude Include="..\..\core\projectivecamera.hpp" />
+    <ClInclude Include="..\..\core\referenced.hpp" />
+    <ClInclude Include="..\..\core\renderer.hpp" />
+    <ClInclude Include="..\..\core\scene.hpp" />
+    <ClInclude Include="..\..\core\shape.hpp" />
+    <ClInclude Include="..\..\generators\luagenerator.hpp" />
+    <ClInclude Include="..\..\generators\trimeshgenerator.hpp" />
+    <ClInclude Include="..\..\libpaprika_export.hpp" />
+    <ClInclude Include="..\..\OSL\background.h" />
+    <ClInclude Include="..\..\OSL\optics.h" />
+    <ClInclude Include="..\..\OSL\sampling.h" />
+    <ClInclude Include="..\..\OSL\shading.h" />
+    <ClInclude Include="..\..\renderers\debugrenderer.hpp" />
+    <ClInclude Include="..\..\renderers\pathtracer.hpp" />
+    <ClInclude Include="..\..\shapes\mesh.hpp" />
+    <ClInclude Include="..\..\shapes\sphere.hpp" />
+    <ClInclude Include="..\..\shapes\triangulate.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\api\paprikaapi.cpp" />
+    <ClCompile Include="..\..\cameras\perspectivecamera.cpp" />
+    <ClCompile Include="..\..\core\camera.cpp" />
+    <ClCompile Include="..\..\core\debug.cpp" />
+    <ClCompile Include="..\..\core\generator.cpp" />
+    <ClCompile Include="..\..\core\geometry.cpp" />
+    <ClCompile Include="..\..\core\mc.cpp" />
+    <ClCompile Include="..\..\core\parametermap.cpp" />
+    <ClCompile Include="..\..\core\paramitem.cpp" />
+    <ClCompile Include="..\..\core\paramtype.cpp" />
+    <ClCompile Include="..\..\core\primitive.cpp" />
+    <ClCompile Include="..\..\core\projectivecamera.cpp" />
+    <ClCompile Include="..\..\core\renderer.cpp" />
+    <ClCompile Include="..\..\core\scene.cpp" />
+    <ClCompile Include="..\..\core\shape.cpp" />
+    <ClCompile Include="..\..\generators\lua-5.1.5\etc\all.c" />
+    <ClCompile Include="..\..\generators\luagenerator.cpp" />
+    <ClCompile Include="..\..\generators\trimeshgenerator.cpp" />
+    <ClCompile Include="..\..\OSL\shading.cpp" />
+    <ClCompile Include="..\..\renderers\debugrenderer.cpp" />
+    <ClCompile Include="..\..\renderers\pathtracer.cpp" />
+    <ClCompile Include="..\..\shapes\mesh.cpp" />
+    <ClCompile Include="..\..\shapes\sphere.cpp" />
+    <ClCompile Include="..\..\shapes\triangulate.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
