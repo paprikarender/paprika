@@ -2,7 +2,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string>
-#include <crtdbg.h>
 
 namespace paprika {
 namespace core {
@@ -16,7 +15,7 @@ namespace core {
 static void processError(const char *format, va_list args, const char *message, int disposition)
 {
 	char errorBuf[2048];
-	_vsnprintf(errorBuf, sizeof(errorBuf), format, args);
+	vsnprintf(errorBuf, sizeof(errorBuf), format, args);
 
 	switch (disposition)
 	{

@@ -3,6 +3,8 @@
 
 #include <core/referenced.hpp>
 #include <iostream>
+#include <cmath>
+#include <limits>
 #include <OSL/dual.h>
 #include <OSL/dual_vec.h>
 #include <OpenEXR/ImathBox.h>

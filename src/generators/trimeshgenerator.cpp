@@ -4,6 +4,7 @@
 #include <vector>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 namespace paprika {
 namespace generator {

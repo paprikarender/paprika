@@ -2,6 +2,7 @@
 #include <core/paramtype.hpp>
 #include <api/paprikaapi.hpp>
 #include <core/debug.hpp>
+#include <string.h>
 
 namespace paprika {
 namespace generator {
