@@ -5,7 +5,19 @@ find_package(Boost COMPONENTS system REQUIRED)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-include_directories(src src/api)
+include_directories(src src/api /root/oiio-Release-1.7.9/dist/linux64/include /root/OpenShadingLanguage-Release-1.7.5/dist/linux64/include /root/embree-2.13.0.x86_64.linux/include /usr/include/lua5.1)
+
+find_library(OIIO_LIBRARIES
+            NAMES OpenImageIO
+            PATHS /root/oiio-Release-1.7.9/dist/linux64/lib)
+
+find_library(OSL_LIBRARIES
+            NAMES oslexec oslcomp oslquery
+            PATHS /root/OpenShadingLanguage-Release-1.7.5/dist/linux64/lib)
+
+find_library(EMBREE_LIBRARIES
+            NAMES embree
+            PATHS /root/embree-2.13.0.x86_64.linux/lib)
 
 set(SOURCE_FILES
     src/api/paprikaapi.cpp
@@ -34,4 +46,4 @@ set(SOURCE_FILES
 )
 add_executable(paprika ${SOURCE_FILES})
 
-target_link_libraries(paprika OpenImageIO oslexec oslcomp oslquery embree lua5.1 ${Boost_LIBRARIES})
+target_link_libraries(paprika ${OIIO_LIBRARIES} ${OSL_LIBRARIES} ${EMBREE_LIBRARIES} lua5.1 ${Boost_LIBRARIES})
