@@ -31,6 +31,7 @@ public:
 
 private:
     std::vector<core::Primitive*> primitives_;
+    RTCDevice device_;
     RTCScene scene_;
 };
 
