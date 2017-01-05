@@ -9,7 +9,7 @@ namespace shape {
 class Sphere : public core::Shape
 {
 public:
-    Sphere(float radius, core::ParameterMap &map);
+    Sphere(RTCDevice device, float radius, core::ParameterMap &map);
     virtual ~Sphere();
 
     virtual float area() const;

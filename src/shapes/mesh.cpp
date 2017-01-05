@@ -6,7 +6,7 @@
 namespace paprika {
 namespace shape {
 
-Mesh::Mesh(const char* interp, int nfaces, const int* nverts, const int* verts, core::ParameterMap& map)
+Mesh::Mesh(RTCDevice device, const char* interp, int nfaces, const int* nverts, const int* verts, core::ParameterMap& map)
 {
     int nConstant = 1;
     int nPerPiece = nfaces;
@@ -87,7 +87,7 @@ Mesh::Mesh(const char* interp, int nfaces, const int* nverts, const int* verts, 
     for (std::size_t i = 0; i < pdf_.size(); ++i)
         pdf_[i] /= area_;
 
-    scene_ = rtcNewScene(RTC_SCENE_STATIC, RTC_INTERSECT1);
+    scene_ = rtcDeviceNewScene(device, RTC_SCENE_STATIC, RTC_INTERSECT1);
 
     geomID_ = rtcNewTriangleMesh(scene_, RTC_GEOMETRY_STATIC, triangles_.size(), nVertex, 1);
 

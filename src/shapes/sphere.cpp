@@ -3,11 +3,11 @@
 namespace paprika {
 namespace shape {
 
-Sphere::Sphere(float radius, core::ParameterMap &map) : radius_(radius)
+Sphere::Sphere(RTCDevice device, float radius, core::ParameterMap &map) : radius_(radius)
 {
     // TODO: transfer parameters but not vertex
 
-    scene_ = rtcNewScene(RTC_SCENE_STATIC, RTC_INTERSECT1);
+    scene_ = rtcDeviceNewScene(device, RTC_SCENE_STATIC, RTC_INTERSECT1);
     geomID_ = rtcNewUserGeometry(scene_, 1);
 
     rtcSetUserData(scene_, geomID_, this);
@@ -133,7 +133,7 @@ void Sphere::fillHitInfo(const core::Ray &ray, int primID, core::HitInfo *hitInf
         theta += 2 * F_PI;
     hitInfo->u = theta * (0.5f * F_INV_PI);
 
-    OSL::Dual2<float> phi = OSL::asin(Pz / radius_);
+    OSL::Dual2<float> phi = OSL::safe_asin(Pz / radius_);
     hitInfo->v = (phi + (F_PI * 0.5f)) * F_INV_PI;
 
     hitInfo->Ng = P.val().normalized();

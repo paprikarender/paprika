@@ -16,7 +16,7 @@ class Primitive;
 class Scene : public core::Referenced
 {
 public:
-    Scene(const std::vector<core::Primitive*> &primitives);
+    Scene(RTCDevice device, const std::vector<core::Primitive*> &primitives);
     ~Scene();
 
     core::Primitive *intersect(const core::Ray &ray, core::InterpolationInfo *interp, OSL::ShaderGlobals *sg) const;
@@ -31,7 +31,6 @@ public:
 
 private:
     std::vector<core::Primitive*> primitives_;
-    RTCDevice device_;
     RTCScene scene_;
 };
 

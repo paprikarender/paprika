@@ -4,14 +4,13 @@
 namespace paprika {
 namespace core {
 
-Scene::Scene(const std::vector<core::Primitive*> &primitives)
+Scene::Scene(RTCDevice device, const std::vector<core::Primitive*> &primitives)
 {
     primitives_ = primitives;
     for (std::size_t i = 0; i < primitives_.size(); ++i)
         primitives_[i]->ref();
 
-    device_ = rtcNewDevice();
-	scene_ = rtcDeviceNewScene(device_, RTC_SCENE_STATIC, RTC_INTERSECT1);
+	scene_ = rtcDeviceNewScene(device, RTC_SCENE_STATIC, RTC_INTERSECT1);
 
     for (std::size_t i = 0; i < primitives_.size(); ++i)
     {
@@ -28,7 +27,6 @@ Scene::~Scene()
     for (std::size_t i = 0; i < primitives_.size(); ++i)
         primitives_[i]->unref();
 	rtcDeleteScene(scene_);
-    rtcDeleteDevice(device_);
 }
 
 

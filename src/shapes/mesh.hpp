@@ -10,7 +10,7 @@ namespace shape {
 class Mesh : public core::Shape
 {
 public:
-    Mesh(const char* interp, int nfaces, const int* nverts, const int* verts, core::ParameterMap &map);
+    Mesh(RTCDevice device, const char* interp, int nfaces, const int* nverts, const int* verts, core::ParameterMap &map);
     virtual ~Mesh();
 
     virtual float area() const;
