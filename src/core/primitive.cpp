@@ -3,13 +3,13 @@
 namespace paprika {
 namespace core {
 
-Primitive::Primitive(Shape *shape, const core::Transform &objectToWorld, OSL::ShadingAttribStateRef shaderState, const core::Transform &shaderToWorld, bool isEmissive)
+Primitive::Primitive(Shape *shape, const core::Transform &objectToWorld, OSL::ShaderGroupRef shaderGroup, const core::Transform &shaderToWorld, bool isEmissive)
 {	
     shape_ = shape;
     shape_->ref();
     objectToWorld_ = objectToWorld;
     worldToObject_ = objectToWorld.inverse();
-    shaderState_ = shaderState;
+    shaderGroup_ = shaderGroup;
     shaderToWorld_ = shaderToWorld;
     isEmissive_ = isEmissive;
 }
@@ -89,7 +89,7 @@ void Primitive::fillIntersectionInfo(const core::Ray &ray, int primID, core::Int
 
 #if 0
         // TODO
-        // refine intersection point (Carsten Alexander Wächter's (toxie) thesis, page 29)
+        // refine intersection point (Carsten Alexander Wï¿½chter's (toxie) thesis, page 29)
         float t = dot(dgeom->Ng, (p0 - dgeom->P)) / dot(dgeom->Ng, ray.d);
         dgeom->P = dgeom->P + ray.d * t;
 #endif

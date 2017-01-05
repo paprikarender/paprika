@@ -13,7 +13,7 @@ class MemoryPool;
 class Primitive : public core::Referenced
 {
 public:
-    Primitive(Shape* shape, const core::Transform &objectToWorld, OSL::ShadingAttribStateRef shaderState, const core::Transform &shaderToWorld, bool isEmissive);
+    Primitive(Shape* shape, const core::Transform &objectToWorld, OSL::ShaderGroupRef shaderGroup, const core::Transform &shaderToWorld, bool isEmissive);
     ~Primitive();
 
     Shape *shape() const
@@ -33,9 +33,9 @@ public:
 
     void interpolate(const core::ParamItem &paramitem, const InterpolationInfo &interp, bool derivatives, void *paramarea) const;
 
-    OSL::ShadingAttribStateRef shaderState() const
+    OSL::ShaderGroupRef shaderGroup() const
     {
-        return shaderState_;
+        return shaderGroup_;
     }
     
     const core::Transform &shaderToWorld() const
@@ -77,7 +77,7 @@ private:
     core::Shape *shape_;
     core::Transform objectToWorld_;
     core::Transform worldToObject_;
-    OSL::ShadingAttribStateRef shaderState_;
+    OSL::ShaderGroupRef shaderGroup_;
     core::Transform shaderToWorld_;
     bool isEmissive_;
 };
