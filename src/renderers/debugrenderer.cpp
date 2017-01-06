@@ -6,8 +6,8 @@
 namespace paprika {
 namespace renderer {
 
-DebugRenderer::DebugRenderer(core::Scene *scene, core::Camera *camera, OSL::ShadingAttribStateRef backgroundShaderState, OSL::ShadingSystem *shadingSystem) : 
-    Renderer(scene, camera, backgroundShaderState, shadingSystem)
+DebugRenderer::DebugRenderer(core::Scene *scene, core::Camera *camera, OSL::ShaderGroupRef backgroundShaderGroup, OSL::ShadingSystem *shadingSystem) : 
+    Renderer(scene, camera, backgroundShaderGroup, shadingSystem)
 {
 }
 
@@ -39,7 +39,7 @@ void DebugRenderer::render()
 
             if (primitive)
             {
-                shadingSystem_->execute(*ctx, *primitive->shaderState(), sg);
+                shadingSystem_->execute(ctx, *primitive->shaderGroup(), sg);
 
                 OIIO::TypeDesc t;
                 const float *data = (const float *)shadingSystem_->get_symbol(*ctx, u_Cout, t);

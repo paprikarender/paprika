@@ -9,7 +9,7 @@ namespace renderer {
 class DebugRenderer : public core::Renderer
 {
 public:
-    DebugRenderer(core::Scene *scene, core::Camera *camera, OSL::ShadingAttribStateRef backgroundShaderState, OSL::ShadingSystem *shadingSystem);
+    DebugRenderer(core::Scene *scene, core::Camera *camera, OSL::ShaderGroupRef backgroundShaderGroup, OSL::ShadingSystem *shadingSystem);
 
     virtual void render();
 };

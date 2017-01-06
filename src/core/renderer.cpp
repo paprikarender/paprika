@@ -201,8 +201,7 @@ bool Renderer::get_inverse_matrix(OSL::Matrix44 &result, OSL::ustring to)
 
 bool Renderer::get_userdata(bool derivatives, OSL::ustring name, OSL::TypeDesc type, OSL::ShaderGlobals *sg, void *val)
 {
-    /*
-    core::InterpolationInfo* interp = static_cast<core::InterpolationInfo*>(renderstate);
+    core::InterpolationInfo* interp = static_cast<core::InterpolationInfo*>(sg->renderstate);
 
     const core::Shape *shape = interp->shape;
 
@@ -217,8 +216,6 @@ bool Renderer::get_userdata(bool derivatives, OSL::ustring name, OSL::TypeDesc t
     shape->interpolate(*paramItem, *interp, derivatives, val);
 
     return true;
-    */
-    return false;
 }
 
 }
