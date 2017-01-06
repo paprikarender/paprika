@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 2.8.4)
 project(paprika)
 
-find_package(Boost COMPONENTS system REQUIRED)
+find_package(Boost COMPONENTS system thread REQUIRED)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
 
 include_directories(src src/api /root/oiio-Release-1.7.9/dist/linux64/include /root/OpenShadingLanguage-Release-1.7.5/dist/linux64/include /root/embree-2.13.0.x86_64.linux/include /usr/include/lua5.1)
 

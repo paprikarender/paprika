@@ -15,71 +15,66 @@ static OIIO::ustring u_screen("screen");
 static OIIO::ustring u_NDC("NDC");
 static OIIO::ustring u_raster("raster");
 
-bool RendererService::get_matrix(OSL::Matrix44 &result, OSL::TransformationPtr xform, float time)
+bool RendererService::get_matrix(OSL::ShaderGlobals *sg, OSL::Matrix44 &result, OSL::TransformationPtr xform, float time)
 {
-    return get_matrix(result, xform);
+    return get_matrix(sg, result, xform);
 }
 
-bool RendererService::get_inverse_matrix(OSL::Matrix44 &result, OSL::TransformationPtr xform, float time)
+bool RendererService::get_inverse_matrix(OSL::ShaderGlobals *sg, OSL::Matrix44 &result, OSL::TransformationPtr xform, float time)
 {
-    return get_inverse_matrix(result, xform);
+    return get_inverse_matrix(sg, result, xform);
 }
 
-bool RendererService::get_matrix(OSL::Matrix44 &result, OSL::TransformationPtr xform)
+bool RendererService::get_matrix(OSL::ShaderGlobals *sg, OSL::Matrix44 &result, OSL::TransformationPtr xform)
 {
     const core::Transform *transform = static_cast<const core::Transform*>(xform);
     result = transform->matrix();
     return true;
 }
 
-bool RendererService::get_inverse_matrix(OSL::Matrix44 &result, OSL::TransformationPtr xform)
+bool RendererService::get_inverse_matrix(OSL::ShaderGlobals *sg, OSL::Matrix44 &result, OSL::TransformationPtr xform)
 {
     const core::Transform *transform = static_cast<const core::Transform*>(xform);
     result = transform->inverseMatrix();
     return true;
 }
 
-bool RendererService::get_matrix(OSL::Matrix44 &result, OSL::ustring from, float time)
+bool RendererService::get_matrix(OSL::ShaderGlobals *sg, OSL::Matrix44 &result, OSL::ustring from, float time)
 {
     return renderer_->get_matrix(result, from, time);
 }
 
-bool RendererService::get_inverse_matrix(OSL::Matrix44 &result, OSL::ustring to, float time)
+bool RendererService::get_inverse_matrix(OSL::ShaderGlobals *sg, OSL::Matrix44 &result, OSL::ustring to, float time)
 {
     return renderer_->get_inverse_matrix(result, to, time);
 }
 
-bool RendererService::get_matrix(OSL::Matrix44 &result, OSL::ustring from)
+bool RendererService::get_matrix(OSL::ShaderGlobals *sg, OSL::Matrix44 &result, OSL::ustring from)
 {
     return renderer_->get_matrix(result, from);
 }
 
-bool RendererService::get_inverse_matrix(OSL::Matrix44 &result, OSL::ustring to)
+bool RendererService::get_inverse_matrix(OSL::ShaderGlobals *sg, OSL::Matrix44 &result, OSL::ustring to)
 {
     return renderer_->get_inverse_matrix(result, to);
 }
 
-bool RendererService::get_attribute(void *renderstate, bool derivatives, OSL::ustring object, OSL::TypeDesc type, OSL::ustring name, void *val)
+bool RendererService::get_attribute(OSL::ShaderGlobals *sg, bool derivatives, OSL::ustring object, OSL::TypeDesc type, OSL::ustring name, void *val)
 {
-    return renderer_->get_attribute(renderstate, derivatives, object, type, name, val);
+    return renderer_->get_attribute(sg, derivatives, object, type, name, val);
 }
 
-bool RendererService::get_array_attribute(void *renderstate, bool derivatives, OSL::ustring object, OSL::TypeDesc type, OSL::ustring name, int index, void *val)
+bool RendererService::get_array_attribute(OSL::ShaderGlobals *sg, bool derivatives, OSL::ustring object, OSL::TypeDesc type, OSL::ustring name, int index, void *val)
 {
-    return renderer_->get_array_attribute(renderstate, derivatives, object, type, name, index, val);
+    return renderer_->get_array_attribute(sg, derivatives, object, type, name, index, val);
 }
 
-bool RendererService::get_userdata(bool derivatives, OSL::ustring name, OSL::TypeDesc type, void *renderstate, void *val)
+bool RendererService::get_userdata(bool derivatives, OSL::ustring name, OSL::TypeDesc type, OSL::ShaderGlobals *sg, void *val)
 {
-    return renderer_->get_userdata(derivatives, name, type, renderstate, val);
+    return renderer_->get_userdata(derivatives, name, type, sg, val);
 }
 
-bool RendererService::has_userdata(OSL::ustring name, OSL::TypeDesc type, void *renderstate)
-{
-    return renderer_->has_userdata(name, type, renderstate);
-}
-
-Renderer::Renderer(core::Scene *scene, core::Camera *camera, OSL::ShadingAttribStateRef backgroundShaderState, OSL::ShadingSystem *shadingSystem)
+Renderer::Renderer(core::Scene *scene, core::Camera *camera, OSL::ShaderGroupRef backgroundShaderGroup, OSL::ShadingSystem *shadingSystem)
 {
     scene_ = scene;
     scene_->ref();
@@ -87,7 +82,7 @@ Renderer::Renderer(core::Scene *scene, core::Camera *camera, OSL::ShadingAttribS
     camera_ = camera;
     camera_->ref();
 
-    backgroundShaderState_ = backgroundShaderState;
+    backgroundShaderGroup_ = backgroundShaderGroup;
     
     shadingSystem_ = shadingSystem;
 }
@@ -204,8 +199,9 @@ bool Renderer::get_inverse_matrix(OSL::Matrix44 &result, OSL::ustring to)
     return false;
 }
 
-bool Renderer::get_userdata(bool derivatives, OSL::ustring name, OSL::TypeDesc type, void *renderstate, void *val)
+bool Renderer::get_userdata(bool derivatives, OSL::ustring name, OSL::TypeDesc type, OSL::ShaderGlobals *sg, void *val)
 {
+    /*
     core::InterpolationInfo* interp = static_cast<core::InterpolationInfo*>(renderstate);
 
     const core::Shape *shape = interp->shape;
@@ -221,23 +217,8 @@ bool Renderer::get_userdata(bool derivatives, OSL::ustring name, OSL::TypeDesc t
     shape->interpolate(*paramItem, *interp, derivatives, val);
 
     return true;
-}
-
-bool Renderer::has_userdata(OSL::ustring name, OSL::TypeDesc type, void *renderstate)
-{
-    core::InterpolationInfo* interp = static_cast<core::InterpolationInfo*>(renderstate);
-
-    const core::Shape *shape = interp->shape;
-
-    const core::ParamItem *paramItem = shape->getParamItem(name);
-
-    if (paramItem == NULL)
-        return false;
-
-    if (paramItem->type.type != type)
-        return false;
-    
-    return true;
+    */
+    return false;
 }
 
 }
