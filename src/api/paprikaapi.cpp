@@ -12,7 +12,7 @@
 #include <OSL/oslexec.h>
 #include <OSL/shading.h>
 #include <shapes/sphere.hpp>
-#include <renderers/pathtracer.hpp>
+// #include <renderers/pathtracer.hpp>
 #include <renderers/debugrenderer.hpp>
 #include <generators/luagenerator.hpp>
 #include <generators/trimeshgenerator.hpp>
@@ -35,17 +35,19 @@ struct PaprikaAPI::PaprikaData
     std::vector<core::Primitive*> primitives;
     core::Camera *camera;
     core::RendererService rendererService;
+    RTCDevice rtcDevice;
     OSL::ErrorHandler errorHandler;
     OSL::ShadingSystem *shadingSystem;
     core::Transform shaderTransform;
-    OSL::ShadingAttribStateRef backgroundShaderState;
+    OSL::ShaderGroupRef shaderGroup;
+    OSL::ShaderGroupRef backgroundShaderGroup;
 };
 
 PaprikaAPI::PaprikaAPI()
 {
-    rtcInit(NULL);
     d_ = new PaprikaData;
-    d_->shadingSystem = OSL::ShadingSystem::create(&d_->rendererService, NULL, &d_->errorHandler);
+    d_->rtcDevice = rtcNewDevice(NULL);
+    d_->shadingSystem = new OSL::ShadingSystem(&d_->rendererService, NULL, &d_->errorHandler);
     register_closures(d_->shadingSystem);
     d_->shadingSystem->attribute("lockgeom", 1);
 #if 1
@@ -60,11 +62,17 @@ PaprikaAPI::~PaprikaAPI()
 {
     if (d_->camera)
         d_->camera->unref();
+
     for (std::size_t i = 0; i < d_->primitives.size(); ++i)
         d_->primitives[i]->unref();
-    OSL::ShadingSystem::destroy(d_->shadingSystem);
+
+    d_->backgroundShaderGroup = nullptr;
+    d_->shaderGroup = nullptr;
+    delete d_->shadingSystem;
+
+    rtcDeleteDevice(d_->rtcDevice);
+
     delete d_;
-    rtcExit();
 }
 
 //valid states
@@ -248,8 +256,8 @@ void PaprikaAPI::mesh(const char* interp, int nfaces, const int* nverts, const i
 
     bool isEmissive = d_->params.find("emissive", OIIO::TypeDesc::INT, 0);
 
-    shape::Mesh *mesh = new shape::Mesh(interp, nfaces, nverts, verts, d_->params);
-    core::Primitive *primitive = new core::Primitive(mesh, d_->ctm, d_->shadingSystem->state(), d_->shaderTransform, isEmissive);
+    shape::Mesh *mesh = new shape::Mesh(d_->rtcDevice, interp, nfaces, nverts, verts, d_->params);
+    core::Primitive *primitive = new core::Primitive(mesh, d_->ctm, d_->shaderGroup, d_->shaderTransform, isEmissive);
     mesh->unref();
 
     d_->primitives.push_back(primitive);
@@ -271,8 +279,8 @@ void PaprikaAPI::sphere(float radius)
 
     bool isEmissive = d_->params.find("emissive", OIIO::TypeDesc::INT, 0);
 
-    shape::Sphere *sphere = new shape::Sphere(radius, d_->params);
-    core::Primitive *primitive = new core::Primitive(sphere, d_->ctm, d_->shadingSystem->state(), d_->shaderTransform, isEmissive);
+    shape::Sphere *sphere = new shape::Sphere(d_->rtcDevice, radius, d_->params);
+    core::Primitive *primitive = new core::Primitive(sphere, d_->ctm, d_->shaderGroup, d_->shaderTransform, isEmissive);
     sphere->unref();
 
     d_->primitives.push_back(primitive);
@@ -289,7 +297,7 @@ void PaprikaAPI::background()
         return;
     }
 
-    d_->backgroundShaderState = d_->shadingSystem->state();
+    d_->backgroundShaderGroup = d_->shaderGroup;
 
     d_->params.reportUnused("background");
     d_->params.clear();
@@ -332,9 +340,9 @@ void PaprikaAPI::render()
         return;
     }
 
-    core::Scene *scene = new core::Scene(d_->primitives);
-    core::Renderer *renderer = new renderer::PathTracer(scene, d_->camera, d_->backgroundShaderState, d_->shadingSystem);
-    //core::Renderer *renderer = new renderer::DebugRenderer(scene, d_->camera, d_->backgroundShaderState, d_->shadingSystem);
+    core::Scene *scene = new core::Scene(d_->rtcDevice, d_->primitives);
+    // core::Renderer *renderer = new renderer::PathTracer(scene, d_->camera, d_->backgroundShaderState, d_->shadingSystem);
+    core::Renderer *renderer = new renderer::DebugRenderer(scene, d_->camera, d_->backgroundShaderGroup, d_->shadingSystem);
     d_->rendererService.setRenderer(renderer);
     renderer->render();
     d_->rendererService.setRenderer(NULL);
@@ -352,7 +360,7 @@ void PaprikaAPI::shaderGroupBegin()
         return;
     }
 
-    d_->shadingSystem->ShaderGroupBegin();
+    d_->shaderGroup = d_->shadingSystem->ShaderGroupBegin();
     d_->state = STATE_SHADER;
 }
 
@@ -401,6 +409,7 @@ void PaprikaAPI::shaderGroupEnd()
     }
 
     d_->shadingSystem->ShaderGroupEnd();
+    d_->shaderGroup = nullptr;
     d_->state = STATE_WORLD;
 }
 
