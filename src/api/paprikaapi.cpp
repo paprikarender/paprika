@@ -409,7 +409,6 @@ void PaprikaAPI::shaderGroupEnd()
     }
 
     d_->shadingSystem->ShaderGroupEnd();
-    d_->shaderGroup = nullptr;
     d_->state = STATE_WORLD;
 }
 
