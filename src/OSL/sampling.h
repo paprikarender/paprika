@@ -8,6 +8,40 @@
 
 OSL_NAMESPACE_ENTER
 
+/// Tiny random number generator
+/// http://burtleburtle.net/bob/rand/smallprng.html
+struct Rng {
+  Rng(int s) {
+      a = 0xF1EA5EED;
+      b = c = d = s;
+      // do 20 rounds to mix up the initial state
+      for (s = 20; s--; (void)(float)*this);
+  }
+
+  operator float() {
+      // mix internal state
+      unsigned int e;
+      e = a - ((b << 27) | (b >>  5));
+      a = b ^ ((c << 17) | (c >> 15));
+      b = c + d;
+      c = d + e;
+      d = e + a;
+      // convert "d" to a float in the range [0,1)
+      union {
+          float f;
+          unsigned int i;
+      } x;
+      x.i = 0x3F800000 | (0x3F7FFFFF & d);
+      return x.f - 1.0f;
+  }
+
+private:
+  unsigned int a, b, c, d;
+};
+
+
+
+
 struct TangentFrame {
     // build frame from unit normal
     TangentFrame(const Vec3& n) : w(n) {

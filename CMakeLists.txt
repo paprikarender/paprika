@@ -4,7 +4,7 @@ project(paprika)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
 
-include_directories(src src/api /root/oiio-Release-1.7.9/dist/linux64/include /root/OpenShadingLanguage-Release-1.7.5/dist/linux64/include /root/embree-2.13.0.x86_64.linux/include /usr/include/lua5.1)
+include_directories(src src/api /home/atilim/oiio-Release-1.7.9/dist/linux64/include /home/atilim/OpenShadingLanguage-Release-1.7.5/dist/linux64/include /home/atilim/embree-2.13.0.x86_64.linux/include /usr/include/lua5.1)
 
 find_package(Boost COMPONENTS system thread REQUIRED)
 
@@ -13,15 +13,15 @@ pkg_search_module(OpenEXR REQUIRED OpenEXR)
 
 find_library(OIIO_LIBRARIES
             NAMES OpenImageIO
-            PATHS /root/oiio-Release-1.7.9/dist/linux64/lib)
+            PATHS /home/atilim/oiio-Release-1.7.9/dist/linux64/lib)
 
 find_library(OSL_LIBRARIES
             NAMES oslexec oslcomp oslquery
-            PATHS /root/OpenShadingLanguage-Release-1.7.5/dist/linux64/lib)
+            PATHS /home/atilim/OpenShadingLanguage-Release-1.7.5/dist/linux64/lib)
 
 find_library(EMBREE_LIBRARIES
             NAMES embree
-            PATHS /root/embree-2.13.0.x86_64.linux/lib)
+            PATHS /home/atilim/embree-2.13.0.x86_64.linux/lib)
 
 set(SOURCE_FILES
     src/api/paprikaapi.cpp
@@ -42,7 +42,7 @@ set(SOURCE_FILES
     src/generators/trimeshgenerator.cpp
     src/OSL/shading.cpp
     src/renderers/debugrenderer.cpp
-    # src/renderers/pathtracer.cpp
+    src/renderers/pathtracer.cpp
     src/shapes/mesh.cpp
     src/shapes/sphere.cpp
     src/shapes/triangulate.cpp

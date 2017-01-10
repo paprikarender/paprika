@@ -18,7 +18,7 @@ namespace renderer {
 class PathTracer : public core::Renderer
 {
 public:
-    PathTracer(core::Scene *scene, core::Camera *camera, OSL::ShadingAttribStateRef backgroundShaderState, OSL::ShadingSystem *shadingSystem);
+    PathTracer(core::Scene *scene, core::Camera *camera, OSL::ShaderGroupRef backgroundShaderGroup, OSL::ShadingSystem *shadingSystem);
     ~PathTracer();
 
     virtual void render();

@@ -14,7 +14,7 @@ struct EvalBackgroundData
 {
     OSL::ShadingSystem *shadingSystem;
     OSL::ShadingContext *ctx;
-    OSL::ShadingAttribStateRef shaderState;
+    OSL::ShaderGroupRef shaderGroup;
 };
 
 static core::Vec3 eval_background(const OSL::Dual2<core::Vec3> &dir, EvalBackgroundData *data)
@@ -24,12 +24,12 @@ static core::Vec3 eval_background(const OSL::Dual2<core::Vec3> &dir, EvalBackgro
     sg.I = dir.val();
     sg.dIdx = dir.dx();
     sg.dIdy = dir.dy();
-    data->shadingSystem->execute(*data->ctx, *data->shaderState, sg);
+    data->shadingSystem->execute(*data->ctx, *data->shaderGroup, sg);
     return OSL::process_background_closure(sg.Ci);
 }
 
-PathTracer::PathTracer(core::Scene *scene, core::Camera *camera, OSL::ShadingAttribStateRef backgroundShaderState, OSL::ShadingSystem *shadingSystem) : 
-    Renderer(scene, camera, backgroundShaderState, shadingSystem)
+PathTracer::PathTracer(core::Scene *scene, core::Camera *camera, OSL::ShaderGroupRef backgroundShaderGroup, OSL::ShadingSystem *shadingSystem) : 
+    Renderer(scene, camera, backgroundShaderGroup, shadingSystem)
 {
     for (std::size_t i = 0; i < scene_->primitives().size(); ++i)
     {
@@ -38,7 +38,7 @@ PathTracer::PathTracer(core::Scene *scene, core::Camera *camera, OSL::ShadingAtt
             lights_.push_back(primitive);
     }
 
-    if (backgroundShaderState_)
+    if (backgroundShaderGroup_)
     {
         background_ = new OSL::Background;
 
@@ -48,7 +48,7 @@ PathTracer::PathTracer(core::Scene *scene, core::Camera *camera, OSL::ShadingAtt
         EvalBackgroundData data;
         data.shadingSystem = shadingSystem_;
         data.ctx = ctx;
-        data.shaderState = backgroundShaderState_;
+        data.shaderGroup = backgroundShaderGroup_;
 
         background_->prepare(128, eval_background, &data);
 
@@ -145,7 +145,7 @@ core::Color3 PathTracer::estimateDirect(OSL::ShadingContext *ctx,
             if (wi.dot(sgLight.Ng) >= 0)
                 break;
 
-            shadingSystem_->execute(*ctx, *light->shaderState(), sgLight);
+            shadingSystem_->execute(*ctx, *light->shaderGroup(), sgLight);
             OSL::ShadingResult resultLight;
             OSL::process_closure(resultLight, sgLight.Ci, true);
 
@@ -221,7 +221,7 @@ core::Color3 PathTracer::estimateDirect(OSL::ShadingContext *ctx,
 
             pdfLight *= pdfLightSelect;
 
-            shadingSystem_->execute(*ctx, *light->shaderState(), sgLight);
+            shadingSystem_->execute(*ctx, *light->shaderGroup(), sgLight);
             OSL::ShadingResult resultLight;
             OSL::process_closure(resultLight, sgLight.Ci, true);
 
@@ -256,14 +256,14 @@ core::Color3 PathTracer::Li(OSL::ShadingContext *ctx, float x, float y)
         {
             if (bounces == 0 || specular)
             {
-                if (backgroundShaderState_)
+                if (backgroundShaderGroup_)
                 {
                     OSL::ShaderGlobals sg;
                     memset(&sg, 0, sizeof(OSL::ShaderGlobals));
                     sg.I = ray.d.val();
                     sg.dIdx = ray.d.dx();
                     sg.dIdy = ray.d.dy();
-                    shadingSystem_->execute(*ctx, *backgroundShaderState_, sg);
+                    shadingSystem_->execute(*ctx, *backgroundShaderGroup_, sg);
                     L += pathThroughput * OSL::process_background_closure(sg.Ci);
                 }
             }
@@ -272,7 +272,7 @@ core::Color3 PathTracer::Li(OSL::ShadingContext *ctx, float x, float y)
         }
 
         // execute shader and process the resulting list of closures
-        shadingSystem_->execute(*ctx, *primitive->shaderState(), sg);
+        shadingSystem_->execute(*ctx, *primitive->shaderGroup(), sg);
         OSL::ShadingResult result;
         OSL::process_closure(result, sg.Ci, false);
 
