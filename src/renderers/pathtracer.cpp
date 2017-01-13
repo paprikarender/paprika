@@ -24,7 +24,7 @@ static core::Vec3 eval_background(const OSL::Dual2<core::Vec3> &dir, EvalBackgro
     sg.I = dir.val();
     sg.dIdx = dir.dx();
     sg.dIdy = dir.dy();
-    data->shadingSystem->execute(*data->ctx, *data->shaderGroup, sg);
+    data->shadingSystem->execute(data->ctx, *data->shaderGroup, sg);
     return OSL::process_background_closure(sg.Ci);
 }
 
@@ -145,7 +145,7 @@ core::Color3 PathTracer::estimateDirect(OSL::ShadingContext *ctx,
             if (wi.dot(sgLight.Ng) >= 0)
                 break;
 
-            shadingSystem_->execute(*ctx, *light->shaderGroup(), sgLight);
+            shadingSystem_->execute(ctx, *light->shaderGroup(), sgLight);
             OSL::ShadingResult resultLight;
             OSL::process_closure(resultLight, sgLight.Ci, true);
 
@@ -173,7 +173,7 @@ core::Color3 PathTracer::estimateDirect(OSL::ShadingContext *ctx,
     {
         OSL::Dual2<core::Vec3> wi;
         float invpdf;
-        bsdf.sample(sg, rng, rng, wi, invpdf);
+        bsdf.sample(sg, rng, rng, rng, wi, invpdf);
 
         if (invpdf == 0)
             break;
@@ -221,7 +221,7 @@ core::Color3 PathTracer::estimateDirect(OSL::ShadingContext *ctx,
 
             pdfLight *= pdfLightSelect;
 
-            shadingSystem_->execute(*ctx, *light->shaderGroup(), sgLight);
+            shadingSystem_->execute(ctx, *light->shaderGroup(), sgLight);
             OSL::ShadingResult resultLight;
             OSL::process_closure(resultLight, sgLight.Ci, true);
 
@@ -263,7 +263,7 @@ core::Color3 PathTracer::Li(OSL::ShadingContext *ctx, float x, float y)
                     sg.I = ray.d.val();
                     sg.dIdx = ray.d.dx();
                     sg.dIdy = ray.d.dy();
-                    shadingSystem_->execute(*ctx, *backgroundShaderGroup_, sg);
+                    shadingSystem_->execute(ctx, *backgroundShaderGroup_, sg);
                     L += pathThroughput * OSL::process_background_closure(sg.Ci);
                 }
             }
@@ -272,7 +272,7 @@ core::Color3 PathTracer::Li(OSL::ShadingContext *ctx, float x, float y)
         }
 
         // execute shader and process the resulting list of closures
-        shadingSystem_->execute(*ctx, *primitive->shaderGroup(), sg);
+        shadingSystem_->execute(ctx, *primitive->shaderGroup(), sg);
         OSL::ShadingResult result;
         OSL::process_closure(result, sg.Ci, false);
 
@@ -290,7 +290,7 @@ core::Color3 PathTracer::Li(OSL::ShadingContext *ctx, float x, float y)
         // sample BSDF to get new path direction
         OSL::Dual2<core::Vec3> wi;
         float invpdf;
-        pathThroughput *= bsdf.sample(sg, rng, rng, wi, invpdf);
+        pathThroughput *= bsdf.sample(sg, rng, rng, rng, wi, invpdf);
 
         if (!(pathThroughput.x > 0) && !(pathThroughput.y > 0) && !(pathThroughput.z > 0))
             break;

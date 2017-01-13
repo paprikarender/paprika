@@ -12,7 +12,7 @@
 #include <OSL/oslexec.h>
 #include <OSL/shading.h>
 #include <shapes/sphere.hpp>
-// #include <renderers/pathtracer.hpp>
+#include <renderers/pathtracer.hpp>
 #include <renderers/debugrenderer.hpp>
 #include <generators/luagenerator.hpp>
 #include <generators/trimeshgenerator.hpp>
@@ -341,8 +341,8 @@ void PaprikaAPI::render()
     }
 
     core::Scene *scene = new core::Scene(d_->rtcDevice, d_->primitives);
-    // core::Renderer *renderer = new renderer::PathTracer(scene, d_->camera, d_->backgroundShaderState, d_->shadingSystem);
-    core::Renderer *renderer = new renderer::DebugRenderer(scene, d_->camera, d_->backgroundShaderGroup, d_->shadingSystem);
+    core::Renderer *renderer = new renderer::PathTracer(scene, d_->camera, d_->backgroundShaderGroup, d_->shadingSystem);
+    // core::Renderer *renderer = new renderer::DebugRenderer(scene, d_->camera, d_->backgroundShaderGroup, d_->shadingSystem);
     d_->rendererService.setRenderer(renderer);
     renderer->render();
     d_->rendererService.setRenderer(NULL);
