@@ -43,6 +43,7 @@ set(SOURCE_FILES
     src/OSL/shading.cpp
     src/renderers/debugrenderer.cpp
     src/renderers/pathtracer.cpp
+    src/renderers/directlighting.cpp
     src/shapes/mesh.cpp
     src/shapes/sphere.cpp
     src/shapes/triangulate.cpp
