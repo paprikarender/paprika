@@ -24,12 +24,12 @@ public:
     virtual void render();
 
 private:
-    // core::Color3 Li(OSL::ShadingContext *ctx, float x, float y);
+    core::Color3 Li(OSL::ShadingContext *ctx, const core::Ray& ray);
     // core::Color3 estimateDirect(OSL::ShadingContext *ctx,
     //                             const OSL::ShaderGlobals &sg,
     //                             OSL::CompositeBSDF &bsdf);
 
-    // std::vector<core::Primitive*> lights_;
+    std::vector<core::Primitive*> lights_;
 
     // OSL::Background *background_;
 };
